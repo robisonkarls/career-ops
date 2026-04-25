@@ -14,13 +14,13 @@
  *   node copilot-eval.mjs --list-models
  *
  * Requires:
- *   GITHUB_TOKEN in .env (or environment variable)
- *   Token must belong to an account with an active GitHub Copilot subscription.
+ *   GitHub CLI (gh) logged in to an account with an active Copilot subscription.
+ *   OR: GITHUB_TOKEN in .env set to an OAuth token (gho_... or ghu_..., NOT a classic PAT ghp_...).
  *
- * How to get your token:
- *   1. Go to https://github.com/settings/tokens
- *   2. Generate a new token (classic) — no special scopes needed
- *   3. Add GITHUB_TOKEN=<your-token> to .env
+ * Setup (recommended):
+ *   brew install gh      # macOS
+ *   gh auth login        # follow browser prompt
+ *   node copilot-eval.mjs --list-models
  */
 
 import { readFileSync, existsSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
@@ -53,11 +53,12 @@ const PATHS = {
 // ---------------------------------------------------------------------------
 // GitHub Copilot API config
 // ---------------------------------------------------------------------------
-const COPILOT_API_BASE    = 'https://api.githubcopilot.com';
-const COPILOT_MODELS_URL  = `${COPILOT_API_BASE}/models`;
-const COPILOT_CHAT_URL    = `${COPILOT_API_BASE}/chat/completions`;
-const DEFAULT_MODEL       = process.env.COPILOT_MODEL || 'gpt-4o';
-const COPILOT_API_VERSION = '2023-07-07';
+const COPILOT_TOKEN_URL      = 'https://api.github.com/copilot_internal/v2/token';
+const COPILOT_API_BASE       = 'https://api.individual.githubcopilot.com';
+const DEFAULT_MODEL          = process.env.COPILOT_MODEL || 'gpt-4o';
+const COPILOT_EDITOR_VERSION = 'vscode/1.96.2';
+const COPILOT_USER_AGENT     = 'GitHubCopilotChat/0.26.7';
+const COPILOT_API_VERSION    = '2025-04-01';
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -126,30 +127,111 @@ for (let i = 0; i < args.length; i++) {
 }
 
 // ---------------------------------------------------------------------------
-// Validate environment
+// Resolve GitHub token (OAuth via gh CLI preferred, env fallback)
 // ---------------------------------------------------------------------------
-const githubToken = process.env.GITHUB_TOKEN;
+async function resolveGithubToken() {
+  // 1. Try GITHUB_TOKEN env / .env (must be an OAuth token, not a classic PAT)
+  if (process.env.GITHUB_TOKEN) return process.env.GITHUB_TOKEN;
+
+  // 2. Try gh CLI — this always produces the right OAuth token
+  try {
+    const { execSync } = await import('child_process');
+    const token = execSync('gh auth token', { encoding: 'utf-8', stdio: ['pipe','pipe','pipe'] }).trim();
+    if (token) return token;
+  } catch {
+    // gh not installed or not logged in
+  }
+
+  return null;
+}
+
+const githubToken = await resolveGithubToken();
 if (!githubToken) {
   console.error(`
-❌  GITHUB_TOKEN not found.
+❌  No GitHub OAuth token found.
 
-   1. Go to https://github.com/settings/tokens
-   2. Generate a new token (classic) — no special scopes needed
-   3. Add it to .env:   GITHUB_TOKEN=your_token_here
-   4. Or export it:     export GITHUB_TOKEN=your_token_here
+   Copilot's API requires an OAuth token — classic PATs are NOT supported.
 
-   Note: Your GitHub account must have an active Copilot subscription.
+   Option 1 (recommended): use the gh CLI
+     brew install gh          # macOS
+     gh auth login            # follow the browser prompt
+     node copilot-eval.mjs    # token is picked up automatically
+
+   Option 2: set GITHUB_TOKEN in .env with an OAuth token
+     (OAuth tokens start with gho_ or ghu_, not ghp_)
+
+   Your account must have an active GitHub Copilot subscription.
 `);
   process.exit(1);
 }
 
-const headers = {
-  'Authorization': `Bearer ${githubToken}`,
-  'Content-Type': 'application/json',
-  'Copilot-Integration-Id': 'vscode-chat',
-  'editor-version': 'vscode/1.85.0',
-  'editor-plugin-version': 'copilot-chat/0.12.0',
-};
+// ---------------------------------------------------------------------------
+// Token resolution: OpenClaw cache → token exchange → error
+// ---------------------------------------------------------------------------
+async function resolveCopilotToken(githubToken) {
+  const { join } = await import('path');
+  const { homedir } = await import('os');
+
+  // 1. Use OpenClaw's cached Copilot token if valid (works on all plans incl. individual)
+  const cachePaths = [
+    join(homedir(), '.openclaw', 'credentials', 'github-copilot.token.json'),
+    join(homedir(), '.openclaw', 'state', 'credentials', 'github-copilot.token.json'),
+  ];
+  for (const cachePath of cachePaths) {
+    if (existsSync(cachePath)) {
+      try {
+        const cached = JSON.parse(readFileSync(cachePath, 'utf-8'));
+        if (cached.token && cached.expiresAt && cached.expiresAt - Date.now() > 300_000) {
+          const proxyEp = cached.token.match(/(?:^|;)\s*proxy-ep=([^;\s]+)/i)?.[1]?.trim();
+          const baseUrl = proxyEp
+            ? `https://${proxyEp.replace(/^https?:\/\//i, '').replace(/^proxy\./i, 'api.')}`
+            : COPILOT_API_BASE;
+          return { token: cached.token, baseUrl };
+        }
+      } catch { /* corrupt cache, skip */ }
+    }
+  }
+
+  // 2. Exchange GitHub OAuth token (requires 'copilot' scope on the token)
+  const res = await fetch(COPILOT_TOKEN_URL, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${githubToken}`,
+      'Editor-Version': COPILOT_EDITOR_VERSION,
+      'User-Agent': COPILOT_USER_AGENT,
+      'X-Github-Api-Version': COPILOT_API_VERSION,
+    },
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    if (res.status === 401) throw new Error(`GitHub token invalid or expired (${res.status})`);
+    throw new Error(
+      `Copilot token exchange failed: HTTP ${res.status}\n` +
+      `   If you're on the Individual plan, make sure OpenClaw is logged in:\n` +
+      `   openclaw login github-copilot`
+    );
+  }
+  const data = await res.json();
+  const token = data.token;
+  const proxyEp = token.match(/(?:^|;)\s*proxy-ep=([^;\s]+)/i)?.[1]?.trim();
+  const baseUrl = proxyEp
+    ? `https://${proxyEp.replace(/^https?:\/\//i, '').replace(/^proxy\./i, 'api.')}`
+    : COPILOT_API_BASE;
+  return { token, baseUrl };
+}
+
+function copilotHeaders(copilotToken, extra = {}) {
+  return {
+    'Authorization': `Bearer ${copilotToken}`,
+    'Content-Type': 'application/json',
+    'Editor-Version': COPILOT_EDITOR_VERSION,
+    'User-Agent': COPILOT_USER_AGENT,
+    'X-Initiator': 'user',
+    'Openai-Intent': 'conversation-edits',
+    ...extra,
+  };
+}
 
 // ---------------------------------------------------------------------------
 // List models (--list-models flag)
@@ -157,30 +239,25 @@ const headers = {
 if (listModels) {
   console.log('\n🤖  Fetching available GitHub Copilot models...\n');
   try {
-    const res = await fetch(COPILOT_MODELS_URL, { headers });
+    const { token, baseUrl } = await resolveCopilotToken(githubToken);
+    const res = await fetch(`${baseUrl}/models`, { headers: copilotHeaders(token) });
     if (!res.ok) {
       const body = await res.text();
       console.error(`❌  API error ${res.status}: ${body}`);
-      if (res.status === 401) {
-        console.error('    Your GITHUB_TOKEN is invalid or expired.');
-      } else if (res.status === 403) {
-        console.error('    Your account does not have an active GitHub Copilot subscription.');
-      }
       process.exit(1);
     }
     const data = await res.json();
-    const models = data.data || data.models || data || [];
+    const models = (data.data || data.models || data || []).filter(m => m.capabilities?.type === 'chat' || !m.capabilities);
     console.log('Available models on your Copilot subscription:\n');
     for (const m of models) {
       const id = m.id || m.name || JSON.stringify(m);
-      const version = m.version ? ` (v${m.version})` : '';
-      const capabilities = m.capabilities?.type ? ` [${m.capabilities.type}]` : '';
-      console.log(`  • ${id}${version}${capabilities}`);
+      const cap = m.capabilities?.type ? ` [${m.capabilities.type}]` : '';
+      console.log(`  • ${id}${cap}`);
     }
     console.log(`\nSet default in .env:  COPILOT_MODEL=<model-id>`);
     console.log(`Or pass per-run:      --model <model-id>\n`);
   } catch (err) {
-    console.error('❌  Network error:', err.message);
+    console.error('\u274c ', err.message);
     process.exit(1);
   }
   process.exit(0);
@@ -273,9 +350,13 @@ console.log(`🤖  Calling GitHub Copilot (${modelName})... this may take 30-60 
 
 let evaluationText;
 try {
-  const res = await fetch(COPILOT_CHAT_URL, {
+  // Step 1: exchange GitHub OAuth token for short-lived Copilot API token
+  const { token: copilotToken, baseUrl } = await resolveCopilotToken(githubToken);
+
+  // Step 2: call chat completions
+  const res = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
-    headers,
+    headers: copilotHeaders(copilotToken),
     body: JSON.stringify({
       model: modelName,
       messages: [
@@ -291,13 +372,7 @@ try {
   if (!res.ok) {
     const body = await res.text();
     console.error(`❌  Copilot API error ${res.status}: ${body}`);
-    if (res.status === 401) {
-      console.error('    Your GITHUB_TOKEN is invalid or expired.');
-      console.error('    Regenerate at: https://github.com/settings/tokens');
-    } else if (res.status === 403) {
-      console.error('    Your account does not have an active GitHub Copilot subscription.');
-      console.error('    Check: https://github.com/settings/copilot');
-    } else if (res.status === 404) {
+    if (res.status === 404) {
       console.error(`    Model "${modelName}" not found on your subscription.`);
       console.error('    Run: node copilot-eval.mjs --list-models');
     } else if (res.status === 429) {
@@ -315,7 +390,7 @@ try {
     process.exit(1);
   }
 } catch (err) {
-  console.error('❌  Network error:', err.message);
+  console.error('❌ ', err.message);
   process.exit(1);
 }
 
