@@ -41,3 +41,7 @@ bun.lock
 .claude/memory/
 career-dashboard
 package-lock.json
+# GitHub Copilot token cache
+.copilot-token.cache.json
+
+.copilot-github.json
