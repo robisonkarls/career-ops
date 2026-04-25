@@ -26,6 +26,7 @@
 import { readFileSync, existsSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { createInterface } from 'readline';
 
 // ---------------------------------------------------------------------------
 // Bootstrap: load .env
@@ -123,6 +124,79 @@ for (let i = 0; i < args.length; i++) {
 }
 
 // ---------------------------------------------------------------------------
+// Interactive model picker (arrow keys + enter)
+// ---------------------------------------------------------------------------
+async function pickModel(models) {
+  return new Promise((resolve) => {
+    const rl = createInterface({ input: process.stdin, output: process.stdout });
+
+    let selected = 0;
+    const total = models.length;
+
+    function render() {
+      // Clear previous lines
+      process.stdout.write(`\x1B[${total + 2}A`);
+      console.log('  Use ↑↓ arrow keys to pick a model, Enter to confirm:\n');
+      for (let i = 0; i < total; i++) {
+        const id = models[i].id;
+        if (i === selected) {
+          process.stdout.write(`  \x1B[32m❯  ${id}\x1B[0m\n`);
+        } else {
+          process.stdout.write(`     ${id}\n`);
+        }
+      }
+    }
+
+    // Initial render
+    console.log('  Use ↑↓ arrow keys to pick a model, Enter to confirm:\n');
+    for (let i = 0; i < total; i++) {
+      const id = models[i].id;
+      if (i === selected) {
+        process.stdout.write(`  \x1B[32m❯  ${id}\x1B[0m\n`);
+      } else {
+        process.stdout.write(`     ${id}\n`);
+      }
+    }
+
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+
+    process.stdin.on('data', function handler(key) {
+      if (key === '\u001B[A') { // up
+        selected = (selected - 1 + total) % total;
+        render();
+      } else if (key === '\u001B[B') { // down
+        selected = (selected + 1) % total;
+        render();
+      } else if (key === '\r' || key === '\n') { // enter
+        process.stdin.setRawMode(false);
+        process.stdin.removeListener('data', handler);
+        rl.close();
+        resolve(models[selected].id);
+      } else if (key === '\u0003') { // ctrl+c
+        process.stdin.setRawMode(false);
+        process.stdin.removeListener('data', handler);
+        rl.close();
+        resolve(null);
+      }
+    });
+  });
+}
+
+async function saveModelToEnv(modelId) {
+  const envPath = join(ROOT, '.env');
+  const line = `COPILOT_MODEL=github-copilot/${modelId}`;
+  let content = existsSync(envPath) ? readFileSync(envPath, 'utf-8') : '';
+  if (content.includes('COPILOT_MODEL=')) {
+    content = content.replace(/^COPILOT_MODEL=.*/m, line);
+  } else {
+    content = content.trimEnd() + (content ? '\n' : '') + line + '\n';
+  }
+  writeFileSync(envPath, content, 'utf-8');
+}
+
+// ---------------------------------------------------------------------------
 // GitHub OAuth device flow (--login)
 // ---------------------------------------------------------------------------
 async function githubLogin() {
@@ -204,21 +278,19 @@ async function githubLogin() {
           if (modelsRes.ok) {
             const modelsData = await modelsRes.json();
             const models = (modelsData.data || []).filter(m => m.capabilities?.type === 'chat');
-            for (const m of models) console.log(`  COPILOT_MODEL=github-copilot/${m.id}`);
+            if (models.length > 0) {
+              const chosen = await pickModel(models);
+              if (chosen) {
+                await saveModelToEnv(chosen);
+                console.log(`\n✅  Model saved to .env: COPILOT_MODEL=github-copilot/${chosen}`);
+                console.log('\n  You\'re all set! Evaluate a job offer:');
+                console.log('\n    node copilot-eval.mjs "Paste JD text here"\n');
+              } else {
+                console.log('\n  No model selected. Add one manually to .env:');
+                console.log('    COPILOT_MODEL=github-copilot/gpt-4o\n');
+              }
+            }
           }
-        }
-      } catch { /* non-fatal — user can run --list-models manually */ }
-
-      console.log();
-      console.log('─'.repeat(66));
-      console.log('  1. Copy a line above and add it to your .env, e.g.:');
-      console.log();
-      console.log('       echo "COPILOT_MODEL=github-copilot/gpt-4o" >> .env');
-      console.log();
-      console.log('  2. Then evaluate any job offer:');
-      console.log();
-      console.log('       node copilot-eval.mjs "Paste JD text here"');
-      console.log('─'.repeat(66) + '\n');
       return;
     }
     const err = tokenData.error;
