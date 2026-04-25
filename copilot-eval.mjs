@@ -291,6 +291,8 @@ async function githubLogin() {
               }
             }
           }
+        }
+      } catch { /* non-fatal — user can run --list-models manually */ }
       return;
     }
     const err = tokenData.error;
