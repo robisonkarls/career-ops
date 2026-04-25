@@ -1,0 +1,72 @@
+{
+  "chatParticipants": [
+    {
+      "id": "career-ops.assistant",
+      "name": "career-ops",
+      "description": "AI job search pipeline — evaluate offers, generate CVs, scan portals, track applications",
+      "isSticky": true,
+      "commands": [
+        {
+          "name": "oferta",
+          "description": "Evaluate a single job offer A–F (scoring, red flags, comp analysis)"
+        },
+        {
+          "name": "ofertas",
+          "description": "Compare and rank multiple job offers"
+        },
+        {
+          "name": "pipeline",
+          "description": "Process pending JD URLs from data/pipeline.md"
+        },
+        {
+          "name": "pdf",
+          "description": "Generate ATS-optimized tailored CV PDF"
+        },
+        {
+          "name": "contacto",
+          "description": "Find LinkedIn contacts + draft outreach message"
+        },
+        {
+          "name": "deep",
+          "description": "Deep company research"
+        },
+        {
+          "name": "tracker",
+          "description": "Application status overview"
+        },
+        {
+          "name": "scan",
+          "description": "Scan job portals for new offers"
+        },
+        {
+          "name": "batch",
+          "description": "Parallel batch processing of multiple JDs"
+        },
+        {
+          "name": "patterns",
+          "description": "Analyze rejection patterns from the tracker"
+        },
+        {
+          "name": "followup",
+          "description": "Follow-up cadence tracker"
+        },
+        {
+          "name": "training",
+          "description": "Evaluate a course or certification vs your North Star"
+        },
+        {
+          "name": "project",
+          "description": "Evaluate a portfolio project idea"
+        },
+        {
+          "name": "apply",
+          "description": "Live application assistant"
+        },
+        {
+          "name": "interview-prep",
+          "description": "Interview prep for a specific role"
+        }
+      ]
+    }
+  ]
+}

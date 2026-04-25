@@ -16,6 +16,7 @@
   <img src="https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white" alt="Claude Code">
   <img src="https://img.shields.io/badge/OpenCode-111827?style=flat&logo=terminal&logoColor=white" alt="OpenCode">
   <img src="https://img.shields.io/badge/Gemini_CLI-4285F4?style=flat&logo=google&logoColor=white" alt="Gemini CLI">
+  <img src="https://img.shields.io/badge/GitHub_Copilot-000?style=flat&logo=github&logoColor=white" alt="GitHub Copilot">
   <img src="https://img.shields.io/badge/Codex_(soon)-6B7280?style=flat&logo=openai&logoColor=white" alt="Codex">
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
@@ -157,6 +158,52 @@ npm run gemini:eval -- "JD text here"
 ```
 
 > **Free tier:** Both options work without billing. Native CLI uses Google OAuth; the API script uses `gemini-2.0-flash` (15 RPM, 1M tokens/day free).
+
+## GitHub Copilot Integration
+
+Career-ops supports [GitHub Copilot](https://github.com/features/copilot) natively in VS Code. The same `modes/*.md` evaluation logic is shared with Claude Code and Gemini CLI.
+
+### Setup
+
+```bash
+# 1. Open the career-ops directory in VS Code
+code ~/career-ops
+
+# 2. Make sure GitHub Copilot extension is installed
+# Extensions → search "GitHub Copilot Chat" → Install
+
+# 3. Copilot automatically picks up .github/copilot-instructions.md
+# No extra config needed.
+```
+
+### Usage in Copilot Chat
+
+Open Copilot Chat (`Ctrl+Alt+I` / `Cmd+Alt+I`) and use the `@career-ops` participant:
+
+```
+@career-ops /oferta Senior AI Engineer at Anthropic...
+@career-ops /pdf
+@career-ops /tracker
+@career-ops /scan
+@career-ops /pipeline
+```
+
+Or just paste a JD directly and Copilot will auto-detect and run the full pipeline:
+
+```
+@career-ops https://jobs.ashbyhq.com/anthropic/senior-ai-engineer
+```
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `.github/copilot-instructions.md` | Auto-loaded workspace context (equivalent to CLAUDE.md / GEMINI.md) |
+| `.vscode/chat-participants.json` | Registers `@career-ops` participant + slash commands |
+| `.vscode/settings.json` | Points Copilot code generation at the instructions file |
+
+> **Note:** The `.github/copilot-instructions.md` file is automatically loaded by Copilot for any repo opened in VS Code — no authentication or extra steps required beyond having the extension installed.
+
 
 ## Usage
 
