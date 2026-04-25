@@ -161,48 +161,58 @@ npm run gemini:eval -- "JD text here"
 
 ## GitHub Copilot Integration
 
-Career-ops supports [GitHub Copilot](https://github.com/features/copilot) natively in VS Code. The same `modes/*.md` evaluation logic is shared with Claude Code and Gemini CLI.
+If you have a [GitHub Copilot](https://github.com/features/copilot) subscription, you can use it as the AI backend for career-ops — no Claude or Gemini key needed. The same evaluation logic in `modes/*.md` runs on top of your Copilot models.
 
 ### Setup
 
 ```bash
-# 1. Open the career-ops directory in VS Code
-code ~/career-ops
+# 1. Get a GitHub personal access token (classic)
+#    https://github.com/settings/tokens
+#    No special scopes needed — just your account with an active Copilot subscription.
 
-# 2. Make sure GitHub Copilot extension is installed
-# Extensions → search "GitHub Copilot Chat" → Install
+# 2. Add it to your .env
+echo 'GITHUB_TOKEN=your_token_here' >> .env
 
-# 3. Copilot automatically picks up .github/copilot-instructions.md
-# No extra config needed.
+# 3. See which models are available on your subscription
+node copilot-eval.mjs --list-models
 ```
 
-### Usage in Copilot Chat
+### Usage
 
-Open Copilot Chat (`Ctrl+Alt+I` / `Cmd+Alt+I`) and use the `@career-ops` participant:
+```bash
+# Evaluate a job offer (paste JD text)
+node copilot-eval.mjs "We are looking for a Senior Software Engineer..."
+
+# Evaluate from a file
+node copilot-eval.mjs --file ./jds/my-job.txt
+
+# Use a specific model
+node copilot-eval.mjs --model gpt-4o-mini "JD text here"
+
+# npm shortcuts
+npm run copilot:eval -- "JD text here"
+npm run copilot:models
+```
+
+### Selecting a model
+
+Run `node copilot-eval.mjs --list-models` to see what's available on your plan. Set a default in `.env`:
 
 ```
-@career-ops /oferta Senior AI Engineer at Anthropic...
-@career-ops /pdf
-@career-ops /tracker
-@career-ops /scan
-@career-ops /pipeline
+COPILET_MODEL=gpt-4o
 ```
 
-Or just paste a JD directly and Copilot will auto-detect and run the full pipeline:
-
-```
-@career-ops https://jobs.ashbyhq.com/anthropic/senior-ai-engineer
-```
+Or pass it per-run with `--model <name>`.
 
 ### Files
 
 | File | Purpose |
 |------|---------|
-| `.github/copilot-instructions.md` | Auto-loaded workspace context (equivalent to CLAUDE.md / GEMINI.md) |
-| `.vscode/chat-participants.json` | Registers `@career-ops` participant + slash commands |
-| `.vscode/settings.json` | Points Copilot code generation at the instructions file |
+| `copilot-eval.mjs` | Standalone evaluator using GitHub Copilot API |
+| `.github/copilot-instructions.md` | Auto-loaded workspace context when using VS Code + Copilot Chat |
+| `.vscode/settings.json` | Points VS Code Copilot at the instructions file |
 
-> **Note:** The `.github/copilot-instructions.md` file is automatically loaded by Copilot for any repo opened in VS Code — no authentication or extra steps required beyond having the extension installed.
+> **Note:** `copilot-eval.mjs` uses the GitHub Copilot API directly — it works from any terminal, no VS Code required.
 
 
 ## Usage

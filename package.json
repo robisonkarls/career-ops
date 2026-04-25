@@ -15,7 +15,9 @@
     "rollback": "node update-system.mjs rollback",
     "liveness": "node check-liveness.mjs",
     "scan": "node scan.mjs",
-    "gemini:eval": "node gemini-eval.mjs"
+    "gemini:eval": "node gemini-eval.mjs",
+    "copilot:eval": "node copilot-eval.mjs",
+    "copilot:models": "node copilot-eval.mjs --list-models"
   },
   "keywords": [
     "ai",
