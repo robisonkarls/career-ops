@@ -163,53 +163,59 @@ npm run gemini:eval -- "JD text here"
 
 If you have a [GitHub Copilot](https://github.com/features/copilot) subscription, you can use it as the AI backend for career-ops — no Claude or Gemini key needed. The same evaluation logic in `modes/*.md` runs on top of your Copilot models.
 
-### Setup
+### Option A — GitHub Copilot CLI (Recommended)
+
+The [GitHub Copilot CLI](https://github.com/github/copilot-cli) is GitHub's official terminal agent. Open it in the career-ops directory and it auto-loads `COPILOT.md` + `.github/copilot-instructions.md` as context.
 
 ```bash
-# 1. Get a GitHub personal access token (classic)
-#    https://github.com/settings/tokens
-#    No special scopes needed — just your account with an active Copilot subscription.
+# 1. Install Copilot CLI
+npm install -g @github/copilot-cli
+# or: npx @github/copilot-cli
 
-# 2. Add it to your .env
-echo 'GITHUB_TOKEN=your_token_here' >> .env
+# 2. Authenticate
+copilot login
 
-# 3. See which models are available on your subscription
-node copilot-eval.mjs --list-models
+# 3. Run in the career-ops directory
+cd career-ops
+copilot
+
+# 4. Just describe what you want — no slash commands needed
+# "Evaluate this job offer: [paste JD]"
+# "Scan for new AI engineering roles"
+# "Generate my CV for this role"
+# "Show my application tracker"
 ```
 
-### Usage
+> **Note:** GitHub Copilot CLI does not support custom slash commands yet. Just describe what you want naturally — the context files tell Copilot exactly how to respond.
+
+### Option B — Standalone API Script (No CLI install needed)
+
+For users who prefer a simple script. Authenticate once, pick a model, evaluate JDs from the terminal.
 
 ```bash
-# Evaluate a job offer (paste JD text)
-node copilot-eval.mjs "We are looking for a Senior Software Engineer..."
+# 1. Authenticate (one-time setup)
+node copilot-eval.mjs --login
+# └─ Opens browser for GitHub authorization
+# └─ Shows model list with arrow-key picker
+# └─ Saves your choice to .env automatically
 
-# Evaluate from a file
+# 2. Evaluate a job description
+node copilot-eval.mjs "We are looking for a Senior Software Engineer..."
 node copilot-eval.mjs --file ./jds/my-job.txt
 
-# Use a specific model
-node copilot-eval.mjs --model gpt-4o-mini "JD text here"
-
-# npm shortcuts
-npm run copilot:eval -- "JD text here"
-npm run copilot:models
+# 3. Other options
+node copilot-eval.mjs --list-models              # see all available models
+node copilot-eval.mjs --model github-copilot/gpt-4o "JD text"  # use specific model
+npm run copilot:eval -- "JD text here"           # npm shortcut
 ```
-
-### Selecting a model
-
-Run `node copilot-eval.mjs --list-models` to see what's available on your plan. Set a default in `.env`:
-
-```
-COPILET_MODEL=gpt-4o
-```
-
-Or pass it per-run with `--model <name>`.
 
 ### Files
 
 | File | Purpose |
 |------|---------|
-| `copilot-eval.mjs` | Standalone evaluator using GitHub Copilot API |
-| `.github/copilot-instructions.md` | Auto-loaded workspace context when using VS Code + Copilot Chat |
+| `COPILOT.md` | Auto-loaded context for GitHub Copilot CLI (equivalent to `CLAUDE.md` / `GEMINI.md`) |
+| `copilot-eval.mjs` | Standalone evaluator — Option B |
+| `.github/copilot-instructions.md` | Auto-loaded context for VS Code Copilot Chat |
 | `.vscode/settings.json` | Points VS Code Copilot at the instructions file |
 
 > **Note:** `copilot-eval.mjs` uses the GitHub Copilot API directly — it works from any terminal, no VS Code required.
