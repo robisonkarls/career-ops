@@ -16,12 +16,12 @@
   <img src="https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white" alt="Claude Code">
   <img src="https://img.shields.io/badge/OpenCode-111827?style=flat&logo=terminal&logoColor=white" alt="OpenCode">
   <img src="https://img.shields.io/badge/Gemini_CLI-4285F4?style=flat&logo=google&logoColor=white" alt="Gemini CLI">
-  <img src="https://img.shields.io/badge/GitHub_Copilot-000?style=flat&logo=github&logoColor=white" alt="GitHub Copilot">
   <img src="https://img.shields.io/badge/Codex_(soon)-6B7280?style=flat&logo=openai&logoColor=white" alt="Codex">
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/Playwright-2EAD33?style=flat&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT">
+  <a href="TRADEMARK.md"><img src="https://img.shields.io/badge/Trademark-Policy-blue.svg" alt="Trademark Policy"></a>
   <a href="https://discord.gg/8pRpHETxa4"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord"></a>
   <br>
   <img src="https://img.shields.io/badge/EN-blue?style=flat" alt="EN">
@@ -157,69 +157,7 @@ node gemini-eval.mjs --file ./jds/my-job.txt
 npm run gemini:eval -- "JD text here"
 ```
 
-> **Free tier:** Both options work without billing. Native CLI uses Google OAuth; the API script uses `gemini-2.0-flash` (15 RPM, 1M tokens/day free).
-
-## GitHub Copilot Integration
-
-If you have a [GitHub Copilot](https://github.com/features/copilot) subscription, you can use it as the AI backend for career-ops — no Claude or Gemini key needed. The same evaluation logic in `modes/*.md` runs on top of your Copilot models.
-
-### Option A — GitHub Copilot CLI (Recommended)
-
-The [GitHub Copilot CLI](https://github.com/github/copilot-cli) is GitHub's official terminal agent. Open it in the career-ops directory and it auto-loads `COPILOT.md` + `.github/copilot-instructions.md` as context.
-
-```bash
-# 1. Install Copilot CLI
-npm install -g @github/copilot-cli
-# or: npx @github/copilot-cli
-
-# 2. Authenticate
-copilot login
-
-# 3. Run in the career-ops directory
-cd career-ops
-copilot
-
-# 4. Just describe what you want — no slash commands needed
-# "Evaluate this job offer: [paste JD]"
-# "Scan for new AI engineering roles"
-# "Generate my CV for this role"
-# "Show my application tracker"
-```
-
-> **Note:** GitHub Copilot CLI does not support custom slash commands yet. Just describe what you want naturally — the context files tell Copilot exactly how to respond.
-
-### Option B — Standalone API Script (No CLI install needed)
-
-For users who prefer a simple script. Authenticate once, pick a model, evaluate JDs from the terminal.
-
-```bash
-# 1. Authenticate (one-time setup)
-node copilot-eval.mjs --login
-# └─ Opens browser for GitHub authorization
-# └─ Shows model list with arrow-key picker
-# └─ Saves your choice to .env automatically
-
-# 2. Evaluate a job description
-node copilot-eval.mjs "We are looking for a Senior Software Engineer..."
-node copilot-eval.mjs --file ./jds/my-job.txt
-
-# 3. Other options
-node copilot-eval.mjs --list-models              # see all available models
-node copilot-eval.mjs --model github-copilot/gpt-4o "JD text"  # use specific model
-npm run copilot:eval -- "JD text here"           # npm shortcut
-```
-
-### Files
-
-| File | Purpose |
-|------|---------|
-| `COPILOT.md` | Auto-loaded context for GitHub Copilot CLI (equivalent to `CLAUDE.md` / `GEMINI.md`) |
-| `copilot-eval.mjs` | Standalone evaluator — Option B |
-| `.github/copilot-instructions.md` | Auto-loaded context for VS Code Copilot Chat |
-| `.vscode/settings.json` | Points VS Code Copilot at the instructions file |
-
-> **Note:** `copilot-eval.mjs` uses the GitHub Copilot API directly — it works from any terminal, no VS Code required.
-
+> **Free tier:** Both options work without billing. Native CLI uses Google OAuth; the API script uses `gemini-2.5-flash` (15 RPM, 1M tokens/day free).
 
 ## Usage
 
@@ -279,6 +217,14 @@ The scanner comes with **45+ companies** ready to scan and **19 search queries**
 
 **Job boards searched:** Ashby, Greenhouse, Lever, Wellfound, Workable, RemoteFront
 
+By default `node scan.mjs` (a.k.a. `npm run scan`) trusts what each ATS feed returns. Some companies leave stale postings in their public API even after the role is closed, so those expired entries can leak into `pipeline.md`. Pass `--verify` to launch Playwright after the API pass and drop expired postings before they hit the pipeline:
+
+```bash
+node scan.mjs --verify          # zero-token discovery + Playwright liveness check
+```
+
+The verification is sequential and only runs against new offers (after dedup), so the cost stays bounded.
+
 ## Dashboard TUI
 
 The built-in terminal dashboard lets you browse your pipeline visually:
@@ -295,7 +241,8 @@ Features: 6 filter tabs, 4 sort modes, grouped/flat view, lazy-loaded previews, 
 
 ```
 career-ops/
-├── CLAUDE.md                    # Agent instructions
+├── AGENTS.md                    # Canonical agent instructions (all CLIs)
+├── CLAUDE.md                    # Claude Code wrapper (imports AGENTS.md)
 ├── cv.md                        # Your CV (create this)
 ├── article-digest.md            # Your proof points (optional)
 ├── config/
@@ -376,9 +323,12 @@ See [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md) for full details. This software i
 
 Got hired using career-ops? [Share your story!](https://github.com/santifer/career-ops/issues/new?template=i-got-hired.yml)
 
-## License
+## License & Trademark
 
-MIT
+The code is licensed under [MIT](LICENSE). The "career-ops" name and
+brand are governed by the [Trademark Policy](TRADEMARK.md) — permissive
+for community use, reserved for commercial product naming and
+endorsement.
 
 ## Let's Connect
 

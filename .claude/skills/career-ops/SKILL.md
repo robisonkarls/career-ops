@@ -1,12 +1,9 @@
 ---
 name: career-ops
-description: AI job search command center -- evaluate offers, generate CVs, scan portals, track applications
-user_invocable: true
-args: mode
-argument-hint: "[scan | deep | pdf | oferta | ofertas | apply | batch | tracker | pipeline | contacto | training | project | interview-prep | update]"
+description: Main career-ops job search router. Shows the command menu or routes to the appropriate mode. Use for any job search task — evaluating offers, generating CVs, tracking applications, scanning portals, and more.
 ---
 
-# career-ops -- Router
+# career-ops — Router
 
 ## Mode Routing
 
@@ -45,23 +42,23 @@ Show this menu:
 career-ops -- Command Center
 
 Available commands:
-  /career-ops {JD}      → AUTO-PIPELINE: evaluate + report + PDF + tracker (paste text or URL)
-  /career-ops pipeline  → Process pending URLs from inbox (data/pipeline.md)
-  /career-ops oferta    → Evaluation only A-F (no auto PDF)
-  /career-ops ofertas   → Compare and rank multiple offers
-  /career-ops contacto  → LinkedIn power move: find contacts + draft message
-  /career-ops deep      → Deep research prompt about company
-  /career-ops pdf       → PDF only, ATS-optimized CV
-  /career-ops training  → Evaluate course/cert against North Star
-  /career-ops project   → Evaluate portfolio project idea
-  /career-ops tracker   → Application status overview
-  /career-ops apply     → Live application assistant (reads form + generates answers)
-  /career-ops scan      → Scan portals and discover new offers
-  /career-ops batch     → Batch processing with parallel workers
-  /career-ops patterns  → Analyze rejection patterns and improve targeting
-  /career-ops followup  → Follow-up cadence tracker: flag overdue, generate drafts
+  /career-ops {JD}           → AUTO-PIPELINE: evaluate + report + PDF + tracker
+  /career-ops-pipeline       → Process pending URLs from inbox (data/pipeline.md)
+  /career-ops-evaluate       → Evaluation only A-G (no auto PDF)
+  /career-ops-compare        → Compare and rank multiple offers
+  /career-ops-contact        → LinkedIn outreach: find contacts + draft message
+  /career-ops-deep           → Deep research about a company
+  /career-ops-pdf            → Generate ATS-optimized CV PDF
+  /career-ops-training       → Evaluate course/cert against North Star
+  /career-ops-project        → Evaluate a portfolio project idea
+  /career-ops-tracker        → Application status overview
+  /career-ops-apply          → Live application assistant
+  /career-ops-scan           → Scan portals and discover new offers
+  /career-ops-batch          → Batch processing with parallel workers
+  /career-ops-patterns       → Analyze rejection patterns
+  /career-ops-followup       → Follow-up cadence tracker
 
-Inbox: add URLs to data/pipeline.md → /career-ops pipeline
+Inbox: add URLs to data/pipeline.md → /career-ops-pipeline
 Or paste a JD directly to run the full pipeline.
 ```
 
@@ -81,15 +78,10 @@ Read `modes/{mode}.md`
 
 Applies to: `tracker`, `deep`, `training`, `project`, `patterns`, `followup`
 
-### Modes delegated to subagent:
-For `scan`, `apply` (with Playwright), and `pipeline` (3+ URLs): launch as Agent with the content of `_shared.md` + `modes/{mode}.md` injected into the subagent prompt.
+### Also load `cv.md` for:
+`auto-pipeline`, `pdf`, `apply`, `oferta`, `ofertas`, `contacto`
 
-```
-Agent(
-  subagent_type="general-purpose",
-  prompt="[content of modes/_shared.md]\n\n[content of modes/{mode}.md]\n\n[invocation-specific data]",
-  description="career-ops {mode}"
-)
-```
+### Always load if exists:
+`modes/_profile.md` for all modes that use `_shared.md`
 
 Execute the instructions from the loaded mode file.
