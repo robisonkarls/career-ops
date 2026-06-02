@@ -18,6 +18,12 @@ Load context:
 
 Then execute pipeline mode as defined in `modes/pipeline.md`.
 
+## Resume Content Rule
+
+When generating PDFs for evaluated offers, apply the Brazilian experience rule from `modes/_profile.md`:
+- **Exclude by default:** Mato Grosso State Supreme Court, Allen Informática
+- **Include only if JD explicitly mentions:** BI, ETL, data warehouse, judicial, Brazil, SQL Server
+
 Process each pending URL (`- [ ]` items) in `data/pipeline.md`:
 1. Evaluate the offer using the A–G scoring system
 2. Save the report to `reports/`

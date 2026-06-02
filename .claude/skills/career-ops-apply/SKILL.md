@@ -20,4 +20,10 @@ Load context:
 
 Then execute the apply mode as defined in `modes/apply.md`.
 
+## Resume Content Rule
+
+When pulling experience to answer application questions, apply the Brazilian experience rule from `modes/_profile.md`:
+- **Exclude by default:** Mato Grosso State Supreme Court, Allen Informática  
+- **Include only if the application form or JD explicitly asks about:** BI, ETL, data warehouse, judicial systems, Brazil, SQL Server
+
 **CRITICAL: NEVER click Submit, Apply, or Send.** Generate answers and show them to the user for review. The user submits manually.

@@ -20,6 +20,12 @@ Load context:
 
 Then execute the full A–G evaluation as defined in `modes/oferta.md`.
 
+## Resume Content Rule
+
+If this evaluation leads to PDF generation (score ≥ 4.0), apply the Brazilian experience rule from `modes/_profile.md`:
+- **Exclude by default:** Mato Grosso State Supreme Court, Allen Informática
+- **Include only if JD explicitly mentions:** BI, ETL, data warehouse, judicial, Brazil, SQL Server
+
 After evaluation:
 1. Save report to `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`
 2. Write TSV entry to `batch/tracker-additions/`

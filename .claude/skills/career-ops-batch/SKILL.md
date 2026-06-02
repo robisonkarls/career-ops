@@ -18,4 +18,10 @@ Load context:
 Then execute batch mode as defined in `modes/batch.md`.
 Process multiple offers efficiently, write TSV files to `batch/tracker-additions/`, then run `node merge-tracker.mjs`.
 
+## Resume Content Rule
+
+When generating PDFs during batch processing, apply the Brazilian experience rule from `modes/_profile.md`:
+- **Exclude by default:** Mato Grosso State Supreme Court, Allen Informática
+- **Include only if JD explicitly mentions:** BI, ETL, data warehouse, judicial, Brazil, SQL Server
+
 Batch input or context: {{arguments}}
