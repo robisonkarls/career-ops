@@ -6,14 +6,17 @@
 2. Ask for JD if not in context (text or URL)
 3. **Extract JD keywords** (15-20 terms + top 3-5 requirements)
 4. **Detect language & format** (letter for US/Canada, A4 for others)
-5. **Build experience mapping** — MAINTAIN cv.md JOB ORDER (with filtering):
-   - **⚠️ FILTER: Exclude Brazilian roles by default** (Mato Grosso State Supreme Court, Allen Informática)
-    - Include ONLY if JD explicitly matches the role domain/stack
-    - Default: focus on primary roles (Dayforce → TrillaBit → TripStack → Avanade → Fleet → etc.)
+5. **Build experience mapping** — MAINTAIN cv.md JOB ORDER (with Brazilian filtering):
+   - **🇧🇷 MANDATORY FILTER: Apply Brazilian experience filtering rule**
+     - Use: `node filter-cv-experience.mjs` helper OR manually check:
+       - Brazilian roles to filter: Mato Grosso State Supreme Court, Allen Informática
+       - Include ONLY if JD contains: BI, ETL, data warehouse, judicial, Brazil, SQL Server, business intelligence
+       - Default: **EXCLUDE Brazilian roles**, focus on primary roles (Dayforce → TrillaBit → TripStack → Avanade → Fleet)
+     - Report filtering in Step 13 summary
    - For EACH qualifying job in cv.md:
-    - Select 6-8 most relevant bullets matching JD keywords
-    - Order bullets within job by relevance (strongest match first)
-    - Keep bullets concise and impactful
+     - Select 6-8 most relevant bullets matching JD keywords
+     - Order bullets within job by relevance (strongest match first)
+     - Keep bullets concise and impactful
 6. **Professional Summary:**
    - Use exact job title from cv.md (e.g., "Senior Security Engineer")
    - Lead with primary differentiator + secondary experience
