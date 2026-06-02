@@ -1,35 +1,59 @@
 # Mode: pdf — ATS-Optimized PDF Generation
 
-## Full pipeline
+## Full pipeline (Revised: Strict CV Facts + Streamlined + Scalable)
 
-1. Read `cv.md` as the source of truth
-2. Ask the user for the JD if it is not in context (text or URL)
-3. Extract 15-20 keywords from the JD
-4. Detect JD language → CV language (EN default)
-5. Detect company location → paper format:
-   - US/Canada → `letter`
-   - Rest of the world → `a4`
-6. Detect role archetype → adapt framing
-7. Rewrite Professional Summary by injecting JD keywords + exit narrative bridge ("Built and sold a business. Now applying systems thinking to [JD domain].")
-8. Select top 3-4 most relevant projects for the job
-9. Reorder experience bullets by JD relevance
-10. Build competency grid from JD requirements (6-8 keyword phrases)
-11. Inject keywords naturally into existing achievements (NEVER invent)
-12. Generate full HTML from template + personalized content
-13. Read `name` from `config/profile.yml` → normalize to kebab-case lowercase (e.g. "John Doe" → "john-doe") → `{candidate}`
-14. Write HTML to `/tmp/cv-{candidate}-{company}.html`
-15. Execute: `node generate-pdf.mjs /tmp/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format={letter|a4}`
-16. Report: PDF path, number of pages, keyword coverage %
+1. **Read cv.md thoroughly** — understand all experiences, skills, achievements
+2. Ask for JD if not in context (text or URL)
+3. **Extract JD keywords** (15-20 terms + top 3-5 requirements)
+4. **Detect language & format** (letter for US/Canada, A4 for others)
+5. **Build experience mapping** — MAINTAIN cv.md JOB ORDER (with filtering):
+   - **⚠️ FILTER: Exclude Brazilian roles by default** (Mato Grosso State Supreme Court, Allen Informática)
+    - Include ONLY if JD explicitly matches the role domain/stack
+    - Default: focus on primary roles (Dayforce → TrillaBit → TripStack → Avanade → Fleet → etc.)
+   - For EACH qualifying job in cv.md:
+    - Select 6-8 most relevant bullets matching JD keywords
+    - Order bullets within job by relevance (strongest match first)
+    - Keep bullets concise and impactful
+6. **Professional Summary:**
+   - Use exact job title from cv.md (e.g., "Senior Security Engineer")
+   - Lead with primary differentiator + secondary experience
+   - Inject 3-5 JD keywords naturally
+   - 3-4 lines, no generic language
+7. **Core Competencies** (8-10 tags):
+   - Extract from cv.md + JD requirements
+   - Match by actual experience only
+8. **Select top 2 Projects** (most relevant to JD):
+   - Pull from cv.md work
+   - Include technologies + measurable impact
+9. **Keyword enrichment** (ethical only):
+   - NEVER invent skills/experiences
+   - ONLY reframe existing accomplishments using JD vocabulary
+10. **Generate formal HTML:**
+    - Jobs in cv.md order (filtered), 6-8 bullets per job
+    - Bullets ordered by JD relevance
+    - Clean headers, competency grid
+    - Brazilian roles excluded unless explicitly relevant
+11. Write HTML → `/tmp/cv-{candidate}-{company}.html`
+12. Execute: `node generate-pdf.mjs ... --format={letter|a4}`
+13. Report: PDF path, file size, note on any experience filtering applied
 
-## ATS Rules (clean parsing)
+## ATS Rules (clean parsing) + Design Standards
 
-- Single-column layout (no sidebars, no parallel columns)
-- Standard headers: "Professional Summary", "Work Experience", "Education", "Skills", "Certifications", "Projects"
-- No text in images/SVGs
-- No critical info in PDF headers/footers (ATS ignores them)
-- UTF-8, selectable text (not rasterized)
-- No nested tables
-- Distributed JD keywords: Summary (top 5), first bullet of each role, Skills section
+- **Single-column layout** (no sidebars, no parallel columns)
+- **Standard headers:** "PROFESSIONAL SUMMARY", "CORE COMPETENCIES", "PROFESSIONAL EXPERIENCE", "PROJECTS", "EDUCATION", "SKILLS"
+- **No text in images/SVGs; no critical info in PDF headers/footers** (ATS ignores them)
+- **UTF-8, selectable text** (not rasterized)
+- **No nested tables; flat structure**
+- **Keyword distribution:** Summary (top 3-5), first bullet of each role, skills section
+- **Formal, professional design:**
+  - Clean typography with strong visual hierarchy
+  - Company + title paired, period/location on separate line
+  - Highlighted bullets prominently displayed (strong relevance marked first)
+  - Competency tags in grid layout
+  - Proper spacing between sections (consistent 0.2-0.3in margins)
+  - Font sizes: headings 12-13px (bold), body 11px (regular), contact info 10px
+  - Color: professional dark text on white, section headers in accent color
+  - File size target: 60-90 KB (reflects substantial content density)
 
 ## PDF Design
 
