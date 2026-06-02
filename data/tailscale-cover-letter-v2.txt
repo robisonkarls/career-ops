@@ -1,0 +1,61 @@
+════════════════════════════════════════════════════════════════════════════════
+TAILSCALE COVER LETTER — FINAL (DAYFORCE SDD FRAMEWORK)
+════════════════════════════════════════════════════════════════════════════════
+
+Dear Tailscale Team,
+
+I'm writing to express my strong interest in the Software Engineer, Strategic Projects 
+role at Tailscale. Your team's explicit embrace of coding agents as a force multiplier 
+represents exactly where I believe the next generation of platform engineering is headed. 
+I don't just use agents—I've architected agent-native systems at production scale.
+
+At Dayforce, I designed and deployed an SDD (Spec-Driven Development) framework that 
+integrated AI skills directly into our core engineering workflow. Here's what this means in 
+practice:
+
+**Specification → Planning → Development → Business-Aware Review**
+
+1. **Specification Layer**: Jira user stories as AI-consumable specs, not just documentation
+2. **Planning Layer**: AI skills that generate implementation tasks and architectural plans 
+   from specs, automatically tailored to our tech stack
+3. **Development Layer**: GitHub SpecKit foundation, customized for Dayforce's tooling 
+   ecosystem (Jira, GitHub, internal systems)
+4. **Review Layer**: AI-powered PR review that understands *business context*. The agent 
+   connects code changes back to user story intent, validates business value added (not 
+   just syntax correctness), and surfaces insights humans would miss.
+
+**The result:** measurable velocity increase with zero quality loss.
+
+This taught me what most engineers are still learning: building agent-native systems isn't 
+about bolting LLMs on top of existing workflows. It's about redesigning the workflow around 
+what agents do best—rapid iteration, context synthesis, multi-tool orchestration—while 
+maintaining architectural rigor and business alignment.
+
+What excites me about Tailscale's Strategic Projects team is the challenge of scaling this 
+thinking to infrastructure. How do agents interact with connectivity? How should MCP gateways 
+be designed so agents can safely provision, configure, or audit Tailscale's platform? How 
+does your product need to evolve to be "agent-native"? These are the exact problems that 
+drew me to systems engineering in the first place.
+
+Throughout my 13+ years in backend systems, I've learned that platform thinking and business 
+impact go hand in hand. I've designed identity infrastructure (OAuth, SAML, OIDC) serving 
+millions of users. I've shipped distributed systems (Kubernetes, Kafka, microservices) from 
+POC to production. I've led teams that moved at startup velocity without sacrificing 
+production standards. The Dayforce SDD framework proves I can do all three simultaneously: 
+platform architecture + agent integration + measurable business results.
+
+I've also embedded this thinking into career-ops, an open-source job search platform where 
+I led the GitHub Copilot integration. It's validation of the SDD framework on a smaller 
+scale—proof that the approach transfers across domains.
+
+Go is new territory for me, but systems thinking and platform architecture transfer. I've 
+shipped in Java, Python, Rust, and TypeScript. Go's philosophy—simple, pragmatic, production-focused—
+resonates deeply with how I think about systems.
+
+I'm excited about the possibility of helping Tailscale define what agent-native, business-aware 
+connectivity infrastructure looks like at global scale.
+
+Best regards,  
+Robison Karls
+
+════════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,122 @@
+════════════════════════════════════════════════════════════════════════════════
+TAILSCALE APPLICATION — RESPONSES (DAYFORCE SDD PRIMARY)
+════════════════════════════════════════════════════════════════════════════════
+
+1. "Why are you interested in this role at Tailscale?"
+────────────────────────────────────────────────────────────────────────────────
+
+Tailscale is solving the fundamental problem I've spent the last 18 months thinking deeply 
+about: how do you redesign systems to be agent-native?
+
+At Dayforce, I built an SDD (Spec-Driven Development) framework that integrated AI skills 
+directly into our engineering workflow. It wasn't a proof-of-concept—it was a production 
+system connecting Jira → GitHub → AI agents → human review, increasing team velocity without 
+compromising quality. The agent didn't just write code; it understood business context, 
+connected PR changes back to user story intent, and validated business value.
+
+Tailscale's Strategic Projects team is asking the same question but at platform scale: How 
+should MCP gateways work? How do agents safely provision connectivity? How does your product 
+become a first-class citizen for agent workflows?
+
+These are the exact problems I want to solve. Platform thinking + agent-native architecture + 
+measurable business impact. That's where I thrive.
+
+════════════════════════════════════════════════════════════════════════════════
+
+2. "Tell us about your experience with coding agents and LLMs."
+────────────────────────────────────────────────────────────────────────────────
+
+I don't just use agents—I've architected agent-native systems at production scale.
+
+**At Dayforce** (primary proof point):
+I designed an SDD (Spec-Driven Development) framework integrating AI skills into core 
+engineering workflows. This wasn't a side project; it was production infrastructure:
+
+• **Specification Layer**: Jira user stories → AI-consumable specs (not just documentation)
+• **Planning Layer**: AI generates implementation tasks + architectural plans, customized for 
+  our tech stack (GitHub SpecKit as foundation, customized for Dayforce tooling)
+• **Development Layer**: Multi-tool orchestration—Jira, GitHub, company systems, AI feedback loop
+• **Review Layer**: Business-context-aware PR review. Agent understands user story intent, 
+  validates business value (not just code syntax), connects changes back to requirements
+
+Result: Measurable velocity increase, zero quality loss, active production use.
+
+**At career-ops** (validation):
+I led the GitHub Copilot integration of an open-source job search platform, validating the 
+SDD framework at smaller scale. Agentic workflows handling multi-step reasoning (job 
+evaluation, resume tailoring, LinkedIn strategy, offer tracking) while maintaining 
+production code quality and security.
+
+**What I learned:**
+- Agents aren't autocomplete—they're force multipliers for workflow redesign
+- Business context awareness is non-negotiable for high-trust agents
+- Production agent systems require: clear specs, validation checkpoints, security practices, 
+  human review protocols
+- The hard part isn't the agent—it's orchestrating multiple tools and maintaining quality 
+  while moving fast
+
+════════════════════════════════════════════════════════════════════════════════
+
+3. "Describe a time you shipped something complex under constraints."
+────────────────────────────────────────────────────────────────────────────────
+
+**The Dayforce SDD Framework** — Agent-native development at scale.
+
+**Constraint 1: Production system, no room for error**
+We needed to increase development velocity on identity and distributed systems code. 
+Traditional approach: hire more engineers. Impractical: deep domain expertise not scalable. 
+Solution: Redesign the workflow to leverage agents without sacrificing quality.
+
+**Constraint 2: Heterogeneous tooling**
+Jira (specs), GitHub (code), internal systems (company-specific standards). Couldn't rely on 
+a single platform. Built custom skill orchestration to bridge them.
+
+**Constraint 3: Business context awareness**
+Simple code review isn't enough. The agent needed to understand *why* code changes—connect 
+back to user story intent, validate business value, not just syntax. Built context layer 
+to pass user story details to PR review agents.
+
+**What we shipped:**
+- Spec-driven task generation from user stories
+- Automated business-context-aware PR review
+- Zero compromise on code quality metrics
+- Measurable velocity increase
+
+**Why it matters**: This teaches the discipline required for production agent systems. Not 
+"use ChatGPT to write code faster"—it's "redesign your system so agents work better than 
+humans at specific tasks, while humans remain the decision makers."
+
+════════════════════════════════════════════════════════════════════════════════
+
+4. "What do you see as the biggest opportunity in AI infrastructure?"
+────────────────────────────────────────────────────────────────────────────────
+
+**Agent-native platform design** — Most infrastructure is built for human operators. The 
+next generation needs to be designed *for agents*, not retrofitted with APIs.
+
+Example: Tailscale's MCP gateway vision. Agents don't need a GUI to provision VPN tunnels; 
+they need a spec-compliant interface, clear contract, business-context awareness, and audit 
+trails. Your platform's design shapes what agents can do.
+
+The companies that win will be those that:
+1. Think about agents early (not as an afterthought)
+2. Design for business-context awareness (agents need to understand intent, not just syntax)
+3. Build observability first (audit, trace, debug agent decisions)
+4. Maintain human oversight (agents make mistakes; humans catch them)
+
+I've done this at Dayforce on engineering workflow. Tailscale can do this for connectivity.
+
+════════════════════════════════════════════════════════════════════════════════
+
+5. PORTFOLIO / GITHUB
+────────────────────────────────────────────────────────────────────────────────
+
+**GitHub: github.com/robisonkarls/career-ops**
+Open-source job search platform. I led the GitHub Copilot integration—agentic workflows 
+for multi-step reasoning (job evaluation, resume tailoring, LinkedIn strategy, offer 
+tracking). Demonstrates production-grade LLM integration and CLI agent architecture.
+
+(Dayforce SDD framework is proprietary; happy to discuss architecture and lessons learned 
+in the interview.)
+
+════════════════════════════════════════════════════════════════════════════════

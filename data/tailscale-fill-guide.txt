@@ -1,0 +1,189 @@
+════════════════════════════════════════════════════════════════════════════════
+TAILSCALE GREENHOUSE FORM — STEP-BY-STEP FILL GUIDE
+════════════════════════════════════════════════════════════════════════════════
+
+URL: https://job-boards.greenhouse.io/tailscale/jobs/4700272005?gh_src=4fd1e7935us
+
+Click "Apply" button → This opens the form
+
+════════════════════════════════════════════════════════════════════════════════
+SECTION 1: BASIC INFO (Auto-fill if you have an account)
+════════════════════════════════════════════════════════════════════════════════
+
+☐ First Name
+   → Robison
+
+☐ Last Name
+   → Karls
+
+☐ Email Address
+   → robison.karls@gmail.com
+
+☐ Phone Number
+   → 226-505-4522
+
+════════════════════════════════════════════════════════════════════════════════
+SECTION 2: RESUME/CV UPLOAD
+════════════════════════════════════════════════════════════════════════════════
+
+☐ Resume/CV Upload
+   → Upload: cv-robison-karls-tailscale-strategic-2026-06-02.pdf
+   → Located in: /mnt/nano1tb/dev/career-ops/output/
+
+════════════════════════════════════════════════════════════════════════════════
+SECTION 3: CUSTOM QUESTIONS (Copy-paste from below)
+════════════════════════════════════════════════════════════════════════════════
+
+Q1: "Why are you interested in this role at Tailscale?"
+COPY-PASTE THIS:
+─────────────────────────────────────────────────────────────────────────────
+I'm drawn to this role because Tailscale is building the future of 
+interconnected infrastructure at a moment when AI agents and distributed 
+systems are redefining connectivity challenges. Your Strategic Projects 
+team's explicit embrace of coding agents as a force multiplier resonates 
+deeply with my work—I've spent the last year building career-ops, an 
+open-source AI-assisted platform that leverages Claude and Copilot for 
+intelligent automation. I understand the technical and cultural decisions 
+required to integrate LLMs and coding agents responsibly: how to validate 
+agent-generated code, wrap it in security practices, and ship without 
+compromising production standards.
+
+The intersection of platform infrastructure, rapid prototyping, and 
+customer collaboration plays directly to my strengths. I've spent 13+ years 
+designing distributed systems (Kubernetes, microservices, event streaming), 
+5+ years deepening my expertise in identity infrastructure (OAuth, SAML, 
+OIDC), and the last 2 years demonstrating that AI-assisted development 
+isn't just a productivity hack—it's a new paradigm for how to build and 
+ship systems faster without sacrificing rigor.
+
+Tailscale's focus on reference customers, externally-visible artifacts 
+(blog posts, open source, conference talks), and emerging use cases (MCP 
+gateways, LLM proxies, AI infrastructure) aligns with how I work best. Go 
+is new to me, but systems thinking transfers. I'm excited to bring my 
+platform architecture experience and AI tooling expertise to help Tailscale 
+define what the next generation of secure, agent-native connectivity looks 
+like.
+─────────────────────────────────────────────────────────────────────────────
+
+Q2: "Tell us about your experience with coding agents and LLMs."
+COPY-PASTE THIS:
+─────────────────────────────────────────────────────────────────────────────
+I'm a daily power user of Claude Code, GitHub Copilot, and Claude API, and 
+I've built a complete product around them. career-ops is an AI-assisted job 
+search pipeline that combines Claude API for intelligent offer evaluation, 
+Copilot for rapid prototyping, and MCP for cross-tool integration. It 
+showcases my hands-on experience with production-grade LLM integration:
+
+• Agentic workflows: The system uses Claude to perform multi-step reasoning 
+  (A-G job evaluation, PDF generation, LinkedIn strategy, offer tracking) 
+  without explicit instruction chaining—it learns from context and adapts.
+
+• Code quality despite agent generation: I've implemented validation scripts, 
+  security practices, and testing frameworks that ensure agent-generated code 
+  meets production standards. This isn't just running Copilot in the IDE—it's 
+  structuring how agents integrate into CI/CD, PR reviews, and deployment 
+  gates.
+
+• Customer collaboration: career-ops has an evolving user base. I've used 
+  feedback from users to refine how agents interact with external APIs 
+  (Greenhouse, Ashby, Lever job boards) and iterate on UX.
+
+At Dayforce, I built Copilot skills that guide teammates through spec-driven 
+development. These skills decompose user stories, extract requirements, and 
+generate implementation plans—not just autocomplete, but deep reasoning over 
+system context.
+
+I see LLMs and coding agents as force multipliers for infrastructure thinking: 
+they excel at rapid iteration, exploring design space quickly, and keeping up 
+with the pace of experimentation. But they require disciplined engineering: 
+clear specs, validation checkpoints, human review protocols. I thrive in that 
+tension—moving fast and maintaining rigor.
+─────────────────────────────────────────────────────────────────────────────
+
+Q3: "Cover Letter" (If this field appears)
+COPY-PASTE THIS:
+─────────────────────────────────────────────────────────────────────────────
+Dear Tailscale Team,
+
+I'm writing to express my strong interest in the Software Engineer, Strategic 
+Projects role at Tailscale. Your team's explicit embrace of coding agents as a 
+force multiplier, combined with your focus on emerging AI infrastructure 
+challenges, represents exactly where I believe the future of systems 
+engineering is headed.
+
+Over the past year, I've built career-ops, an open-source AI-assisted job 
+search platform that demonstrates my deep commitment to production-grade LLM 
+integration. It's not just a proof-of-concept—it's a fully functional system 
+that leverages Claude and Copilot to perform complex multi-step reasoning 
+while maintaining rigorous code quality and security standards.
+
+Throughout my 13+ years in backend systems and infrastructure, I've learned 
+that the best engineering happens when you understand both technical depth and 
+business need. I've designed identity infrastructure (OAuth, SAML, OIDC) 
+serving millions of users. I've shipped distributed systems (Kubernetes, Kafka, 
+microservices) that graduated from POCs to production.
+
+What excites me about Tailscale's Strategic Projects team is the intersection 
+of three things I'm passionate about:
+
+1. Platform thinking — Building infrastructure that others build on top of. 
+   MCP gateways, LLM proxies, identity-aware networking are foundational 
+   problems that define what's possible.
+
+2. Agentic AI integration — Not just using agents in my workflow, but 
+   designing systems for agents. How does Tailscale's platform need to evolve 
+   so agents can safely provision connectivity?
+
+3. Customer collaboration + visible impact — Reference architectures, blog 
+   posts, open source, conference talks. Career-ops is on GitHub, adopted 
+   globally, reflecting my philosophy of building in public.
+
+Go is new territory for me, but systems thinking transfers. I've shipped in 
+Java, Python, Rust, and TypeScript. I'm eager to bring that systems background 
+to Tailscale's platform challenges.
+
+I'd be thrilled to discuss how career-ops and Tailscale's vision could inform 
+each other.
+
+Best regards,
+Robison Karls
+─────────────────────────────────────────────────────────────────────────────
+
+Q4: (If asked) "Are you authorized to work in Canada?"
+ANSWER: Yes
+
+Q5: (If asked) "Any relocation needed?"
+ANSWER: No. I'm a Canadian citizen in Cochrane, AB. Fully eligible remote 
+across Canada and US.
+
+Q6: (If asked) "Salary expectations?"
+ANSWER: CAD $240,000–$280,000 base, depending on equity and sign-on bonus 
+structure. Open to discussion based on full package (base + equity + benefits).
+
+Q7: (If asked) "GitHub/Portfolio?"
+ANSWER: github.com/robisonkarls/career-ops — Open-source, AI-driven job 
+search pipeline. Demonstrates production-grade LLM integration, CLI 
+architecture, and agentic workflows. Written in Node.js, uses Claude API, 
+Playwright, Greenhouse/Ashby/Lever API integrations.
+
+════════════════════════════════════════════════════════════════════════════════
+FINAL STEP: SUBMIT
+════════════════════════════════════════════════════════════════════════════════
+
+☐ Review all fields one more time
+☐ Click "Submit Application" or "Apply" button
+
+That's it! You're done.
+
+════════════════════════════════════════════════════════════════════════════════
+AFTER SUBMISSION
+════════════════════════════════════════════════════════════════════════════════
+
+Tell me: "Applied" or "Tailscale applied"
+
+I will then:
+✅ Update tracker (status → Applied)
+✅ Schedule LinkedIn outreach for June 3
+✅ Set follow-up reminder for June 9
+
+════════════════════════════════════════════════════════════════════════════════

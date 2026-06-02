@@ -1,0 +1,52 @@
+════════════════════════════════════════════════════════════════════════════════
+TAILSCALE COVER LETTER — CORRECTED
+════════════════════════════════════════════════════════════════════════════════
+
+Dear Tailscale Team,
+
+I'm writing to express my strong interest in the Software Engineer, Strategic Projects 
+role at Tailscale. Your team's explicit embrace of coding agents as a force multiplier 
+represents exactly where I believe the future of systems engineering is headed.
+
+Over the past year, I've led the GitHub Copilot integration for career-ops, an AI-driven 
+job search platform. This work demonstrates my deep hands-on expertise with production-grade 
+LLM integration: building agentic workflows that perform multi-step reasoning (job evaluation, 
+resume tailoring, LinkedIn strategy, offer tracking) while maintaining rigorous code quality 
+and security standards. I understand the technical and cultural decisions required to integrate 
+coding agents responsibly: how to validate agent-generated code, wrap it in security practices, 
+and ship without compromising production standards.
+
+Throughout my 13+ years in backend systems and infrastructure, I've learned that the best 
+engineering happens when you understand both technical depth and business need. I've designed 
+identity infrastructure (OAuth, SAML, OIDC) serving millions of users. I've shipped distributed 
+systems (Kubernetes, Kafka, microservices) that graduated from POCs to production. I've mentored 
+teams on holding the production bar while moving at startup velocity.
+
+What excites me about Tailscale's Strategic Projects team is the intersection of three things 
+I'm passionate about:
+
+1. **Platform thinking** — Building infrastructure that others build on top of. MCP gateways, 
+   LLM proxies, identity-aware networking—these are the foundational problems that define 
+   what's possible for the next generation of applications.
+
+2. **Agent-native systems integration** — Not just using agents in my own workflow, but 
+   designing systems to work *with* agents. How does Tailscale's platform need to evolve 
+   so agents can safely provision connectivity, tunnel through it, or manage access? That's 
+   the strategic thinking I want to bring.
+
+3. **Customer collaboration + visible impact** — Reference architectures, blog posts, open 
+   source, conference talks. I thrive in environments where the work you ship is directly 
+   visible to the community and customers.
+
+Go is new territory for me, but systems thinking transfers. I've shipped in Java, Python, 
+Rust, and TypeScript—each taught me something about performance trade-offs, concurrency, 
+and architecture. Go's philosophy resonates with me: simple, pragmatic, focused on production 
+concerns. I'm eager to bring that systems background to Tailscale's platform challenges.
+
+I'm excited about the possibility of helping define what AI-native, agent-friendly 
+connectivity infrastructure looks like at scale.
+
+Best regards,  
+Robison Karls
+
+════════════════════════════════════════════════════════════════════════════════
